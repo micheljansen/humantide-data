@@ -16,7 +16,7 @@ Additionally, you can use the code in the "demo" directory to explore the data, 
 License
 -----------
 (cc) Syzygy 2013.
-The data and sample code are licensed under a Creative Commons Attribution 3.0 license. This means you are free:
+The data and sample code are licensed under a Creative Commons Attribution 3.0 license. This means you are free (and in fact encouraged):
 * to Share — to copy, distribute and transmit the work
 * to Remix — to adapt the work
 * to make commercial use of the work.
