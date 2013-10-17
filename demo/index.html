@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width">
+<meta charset="UTF-8">
+<title></title>
+<style>
+* { margin: 0; padding: 0; }
+#map_container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+#map {
+  height: 100%;
+  background: #333;
+}
+#debug {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  white-space: pre-wrap;
+}
+</style>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.ie.css" />
+<![endif]-->
+</head>
+<body>
+  <div id="main">
+    <div id="map_container">
+      <div id="map"></div>
+    </div>
+    <div style="display:none" id="debug">hover on a point to debug</div>
+  </div>
+  <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+  <script type="text/javascript" src="show.js">
+  </script>
+</body>
+</html>
