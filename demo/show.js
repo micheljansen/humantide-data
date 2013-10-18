@@ -4,9 +4,16 @@ var dots;
 var data;
 
 var debug_mode = /debug/.test(document.location.hash);
+$(function() {
+  $("#debug_mode").attr("checked", debug_mode);
+  $("#debug_mode").on("change", function() {
+    document.location.hash = this.checked ? "debug" : "";
+  })
+});
 
-document.addEventListener("hashchange", function() {
+window.addEventListener("hashchange", function() {
   debug_mode = /debug/.test(document.location.hash);
+  $("#debug_mode").attr("checked", debug_mode);
   show_hide_dots();
 });
 
@@ -27,7 +34,7 @@ function getUrlVars() {
 
 var funkycolors = ["blueviolet", "chartreuse", "darkblue", "darkmagenta", "green", "indigo", "maroon", "orangered", "black", "magenta", "deeppink"];
 var params = getUrlVars();
-var $debug = $("#debug");
+var $debug = $("#debug_log");
 
 
 $.ajax({dataType: "JSON", url: "../data/segments.json" })

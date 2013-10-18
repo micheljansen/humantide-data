@@ -37,7 +37,10 @@
     <div id="map_container">
       <div id="map"></div>
     </div>
-    <div style="display:none" id="debug">hover on a point to debug</div>
+    <div id="debug">
+      <input type="checkbox" id="debug_mode"/><label for="debug_mode"> enable debug mode</label>
+      <div style="display:none" id="debug_log">hover on a point to debug</div>
+    </div>
   </div>
   <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
