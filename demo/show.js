@@ -1,7 +1,15 @@
 // create a map in the "map" div, set the view to a given place and zoom
 var map = L.map('map').setView([51.37329401546412, 1.111689805984497], 16);
+var dots;
+var data;
 
-var SHOW_DOTS=false; // enable to show debug information
+var debug_mode = /debug/.test(document.location.hash);
+
+document.addEventListener("hashchange", function() {
+  debug_mode = /debug/.test(document.location.hash);
+  show_hide_dots();
+});
+
 map._layersMaxZoom=20
 
 function getUrlVars() {
@@ -24,6 +32,7 @@ var $debug = $("#debug");
 
 $.ajax({dataType: "JSON", url: "../data/segments.json" })
 .done(function(segments) {
+  data = segments;
   var bounds = new L.LatLngBounds();
 
    _(segments).each(function(segment) {
@@ -33,29 +42,65 @@ $.ajax({dataType: "JSON", url: "../data/segments.json" })
       bounds.extend(latlngs);
       //var pl = new L.Polyline(latlngs, {color: funkycolors[cid % funkycolors.length]}).addTo(map)
       var pl = new L.Polyline(latlngs, {color: "white"}).addTo(map)
-
-      if(SHOW_DOTS) {
-        var dots = trail.map(function(e) {
-          var dt =  new Date(e.generated_at);
-          var minute = dt.getMinutes();
-          var t = (dt.getMinutes()*60+dt.getSeconds())/(60*60);
-
-          var dot = new L.Circle(new L.LatLng(+e.latitude, +e.longitude), 0.5,
-          {
-            color: "hsl("+Math.floor(360*t)+",100%, 50%)",
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 1
-          });
-          dot.addTo(map);
-          dot.on('mouseover', function() { $debug.show().html(JSON.stringify(e, null, "  ")); console.log(e) });
-          return dot;
-        });
-      }
     }
   });
+
+  show_hide_dots();
 
   map.fitBounds(bounds);
 
 });
+
+function show_hide_dots() {
+  if(!data) {
+    // data didn't load yet, defer processing
+    return;
+  }
+
+  if(debug_mode) {
+    if(!dots) {
+      dots = get_dots();
+    }
+    _(dots).each(function(c) {
+      _(c).each(function(t) {
+        _(t).each(function(d) {
+          d.addTo(map);
+        });
+      });
+    });
+  }
+  else {
+    if(dots) {
+      _(dots).each(function(c) {
+       _(c).each(function(t) {
+        _(t).each(function(d) {
+          map.removeLayer(d)
+        });
+       });
+      });
+    }
+  }
+}
+
+function get_dots() {
+  return _(data).map(function(segments) {
+    return _(segments).map(function(trail) {
+      return _(trail).map(function(e) {
+        var dt =  new Date(e.generated_at);
+        var minute = dt.getMinutes();
+        var t = (dt.getMinutes()*60+dt.getSeconds())/(60*60);
+
+        var dot = new L.Circle(new L.LatLng(+e.latitude, +e.longitude), 0.5,
+                               {
+                                 color: "hsl("+Math.floor(360*t)+",100%, 50%)",
+                                 weight: 2,
+                                 opacity: 1,
+                                 fillOpacity: 1
+                               });
+        dot.on('mouseover', function() { $debug.show().html(JSON.stringify(e, null, "  ")); console.log(e) });
+        return dot;
+      });
+    });
+  });
+}
 
